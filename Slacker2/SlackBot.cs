@@ -163,6 +163,8 @@ namespace Slacker2
 							args.Add(Convert.ToInt64(matches.Groups[i].Value));
 						else if (type == typeof(float))
 							args.Add(Convert.ToSingle(matches.Groups[i].Value));
+						else if (type == typeof(double))
+							args.Add(Convert.ToDouble(matches.Groups[i].Value));
 					}
 				}
 				catch (Exception e)

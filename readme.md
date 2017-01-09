@@ -77,3 +77,13 @@ public void OnShutdown(SlackMessage message) {
     /* shutdown machine */
 }
 ```
+
+User permissions can be evaluated at method's body instead `NeedsPermission` attribute. 
+```cs
+var user = message.Sender;
+
+if (user.Permissions.Contains("SYSTEM_SHUTDOWN"))
+    ; /* shutdown machine */
+else
+    message.Reply("Sorry, but you don't have the proper permission.");    
+```
