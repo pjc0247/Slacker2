@@ -20,7 +20,7 @@ __Respond to messages__<br>
 Creating a new bot command is very simple. Even you don't need to register your commands manually.<br>
 Just define a method and let __Slacker2__ know the method is a subscriber. __Slacker2__ will find your all subscribers automatically.<br>
 <br>
-The example below shows that how to create a simple bot command.
+The example below shows that how to make a basic bot command.
 ```cs
 public class Program : BotService {
 
