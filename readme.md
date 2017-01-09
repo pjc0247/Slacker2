@@ -10,7 +10,7 @@ __Initialization__
 ```cs
 SlackBot.Configuration = new SlackBotConfiguration()
 {
-    AuthToken = "xoxb-42347798839-StUHhs5b16zCx9156PKa0u5c"
+    AuthToken = "xoxb-AAAA-BBBBBBBB"
 };
 SlackBot.Run();
 ```
