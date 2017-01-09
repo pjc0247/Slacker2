@@ -16,7 +16,11 @@ SlackBot.Run();
 ```
 You can find your AuthToken [here](https://api.slack.com/docs/oauth-test-tokens).
 
-__Respond to messages__
+__Respond to messages__<br>
+Creating a new bot commands is very simple. You don't need to register your new commands manually.<br>
+Just define a method and let __Slacker2__ know the method is a subscriber. __Slacker2__ will find your all subscribers automatically.<br>
+<br>
+The example below shows that how to create a simple bot command.
 ```cs
 public class Program : BotService {
 
@@ -45,7 +49,7 @@ public void OnSum(SlackMessage message, int a, int b) {
 
 
 __Periodic tasks__<br>
-If you need to execute a method in every specific minutes, just add `Schedule` attribute on your method.<br>
+If you need to execute a method in every specific minutes, just add a `Schedule` attribute on your method.<br>
 __Slacker2__ will invoke the method repeatedly by internally managed timers.
 ```cs
 [Schedule(1)] // interval (seconds)
@@ -54,3 +58,5 @@ public void OnTimer()
     Console.WriteLine("IM TIMER JOB");
 }
 ```
+
+

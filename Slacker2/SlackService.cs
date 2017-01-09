@@ -43,6 +43,7 @@ namespace Slacker2
 			Slack.EmitPresence(_ => { }, Presence.active);
 
 			waitEvent.WaitOne();
+			waitEvent.Dispose();
 		}
 
 		void OnMessageReceived(NewMessage message)
