@@ -57,7 +57,7 @@ namespace Slacker2
 				ExecuteScheduledTasks,
 				null,
 				TimeSpan.FromSeconds(0),
-				TimeSpan.FromSeconds(5));
+				TimeSpan.FromSeconds(Configuration.SchedulerResolution));
 			LastScheduled = DateTime.Now;
 		}
 		private static void ExecuteScheduledTasks(object _)
