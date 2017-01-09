@@ -1,0 +1,57 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <ProjectGuid>{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}</ProjectGuid>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+    <Compile Include="SubscribeAttribute.cs" />
+    <Compile Include="UsageAttribute.cs" />
+    <Compile Include="BotService.cs" />
+    <Compile Include="NeedsPermissionAttribute.cs" />
+    <Compile Include="SlackMessageExt.cs" />
+    <Compile Include="ScheduleAttribute.cs" />
+    <Compile Include="SlackBot.cs" />
+    <Compile Include="SlackBotConfiguration.cs" />
+    <Compile Include="SlackService.cs" />
+    <Compile Include="Models\SlackChannel.cs" />
+    <Compile Include="Models\SlackMessage.cs" />
+    <Compile Include="Models\SlackUser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Http" />
+    <Reference Include="System.Web.Http.SelfHost" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Downloads\SlackAPI-master\SlackAPI\SlackAPI.csproj">
+      <Project>{0C0A58A8-174E-4A4C-907B-C3569144D15D}</Project>
+      <Name>SlackAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

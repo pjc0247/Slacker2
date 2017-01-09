@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Slacker2.Models
+{
+	public class SlackUser
+	{
+		public string Name { get; set; }
+
+		public HashSet<string> Permissions { get; }
+
+		public SlackUser()
+		{
+			Permissions = new HashSet<string>();
+		}
+
+		public override string ToString()
+		{
+			return Name;
+		}
+	}
+}

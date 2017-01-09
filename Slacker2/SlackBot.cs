@@ -1,0 +1,198 @@
+﻿using System;
+using System.Threading;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
+namespace Slacker2
+{
+	using Models;
+
+	public class SlackBot
+	{
+		public static SlackBotConfiguration Configuration { get; set; }
+
+		private static Dictionary<Regex, SlackMessageHandler> Handlers { get; set; }
+		private static Dictionary<TimeSpan, SlackScheduledTaskHandler> SchedulesTasks { get; set; }
+
+		private static SlackService Slack { get; set; }
+
+		private static DateTime LastScheduled { get; set; }
+
+		private static void InitializeSchedulers()
+		{
+			SchedulesTasks = new Dictionary<TimeSpan, SlackScheduledTaskHandler>();
+
+			var services = Assembly.GetEntryAssembly()
+					.GetTypes()
+					.Where(x => x.IsSubclassOf(typeof(BotService)));
+
+			foreach (var service in services)
+			{
+				var inst = (BotService)Activator.CreateInstance(service);
+				inst.Slack = Slack;
+
+				var tasks = service
+					.GetMethods()
+					.Select(x => new SlackScheduledTaskHandler()
+					{
+						Handler = x,
+
+						ScheduleAttr = x.GetCustomAttribute<ScheduleAttribute>(),
+
+						ServiceInstance = inst
+					})
+					.Where(x => x.ScheduleAttr != null);
+
+				foreach (var task in tasks)
+				{
+					var interval = task.ScheduleAttr.Interval;
+
+					SchedulesTasks[interval] = task;
+				}
+			}
+
+			var timer = new Timer(
+				ExecuteScheduledTasks,
+				null,
+				TimeSpan.FromSeconds(0),
+				TimeSpan.FromSeconds(5));
+			LastScheduled = DateTime.Now;
+		}
+		private static void ExecuteScheduledTasks(object _)
+		{
+			foreach (var pair in SchedulesTasks)
+			{
+				var originalInverval = pair.Key;
+				var task = pair.Value;
+
+				task.TicksLeft -= DateTime.Now - LastScheduled;
+
+				if (task.TicksLeft <= TimeSpan.FromSeconds(0))
+				{
+					task.TicksLeft = originalInverval;
+
+					task.Handler?.Invoke(task.ServiceInstance, new object[] { });
+				}
+			}
+
+			LastScheduled = DateTime.Now;
+		}
+
+		private static void InitializeHandlers()
+		{
+			Handlers = new Dictionary<Regex, SlackMessageHandler>();
+
+			var services = Assembly.GetEntryAssembly()
+					.GetTypes()
+					.Where(x => x.IsSubclassOf(typeof(BotService)));
+
+			foreach (var service in services)
+			{
+				var inst = (BotService)Activator.CreateInstance(service);
+				inst.Slack = Slack;
+
+				var subscribers = service
+					.GetMethods()
+					.Select(x => new SlackMessageHandler()
+					{
+						Handler = x,
+						SubscribeAttr = x.GetCustomAttribute<SubscribeAttribute>(),
+						UsageAttr = x.GetCustomAttribute<UsageAttribute>(),
+						PermissionAttr = x.GetCustomAttribute<NeedsPermissionAttribute>(),
+
+						ServiceInstance = inst
+					})
+					.Where(x => x.SubscribeAttr != null);
+
+				foreach (var subscriber in subscribers)
+				{
+					var regex = new Regex(subscriber.SubscribeAttr.Pattern);
+
+					Handlers[regex] = subscriber;
+				}
+			}
+		}
+		private static void InitializeSlack()
+		{
+			Slack = new SlackService(Configuration.AuthToken);
+
+			Slack.OnSlackMessage = OnSlackMessage;
+		}
+		static void OnSlackMessage(SlackMessage message)
+		{
+			Console.WriteLine($"[{message.Sender}] : {message.Message}");
+
+			foreach (var handler in Handlers)
+			{
+				var inst = handler.Value.ServiceInstance;
+				var regex = handler.Key;
+				var usageAttr = handler.Value.UsageAttr;
+				var permissionAttr = handler.Value.PermissionAttr;
+				var methodInfo = handler.Value.Handler;
+
+				var matches = regex.Match(message.Message);
+
+				if (matches.Success == false)
+					continue;
+				if (permissionAttr != null)
+				{
+					if (message.Sender.Permissions.Contains(permissionAttr.PermissionGroupName) == false)
+						continue;
+				}
+
+				var parameters = methodInfo.GetParameters();
+				var args = new List<object>();
+				var errorContinue = false;
+
+				try
+				{
+					args.Add(message);
+					for (int i = 1; i < matches.Groups.Count; i++)
+					{
+						var type = parameters[i].ParameterType;
+
+						if (type == typeof(string))
+							args.Add(matches.Groups[i].Value);
+						else if (type == typeof(int))
+							args.Add(Convert.ToInt32(matches.Groups[i].Value));
+						else if (type == typeof(long))
+							args.Add(Convert.ToInt64(matches.Groups[i].Value));
+						else if (type == typeof(float))
+							args.Add(Convert.ToSingle(matches.Groups[i].Value));
+					}
+				}
+				catch (Exception e)
+				{
+					if (usageAttr != null)
+					{
+						Slack.SendMessage(message.Channel.Name, "@" + message.Sender + " : " + usageAttr.Message);
+					}
+					errorContinue = true;
+				}
+
+				if (errorContinue)
+					continue;
+				try
+				{
+					methodInfo?.Invoke(inst, args.ToArray());
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e);
+				}
+			}
+		}
+
+		public static void Run()
+		{
+			if (Configuration == null)
+				throw new InvalidOperationException($"{nameof(Configuration)} -> null");
+
+			InitializeSlack();
+			InitializeSchedulers();
+			InitializeHandlers();
+		}
+	}
+}
