@@ -6,14 +6,15 @@ __Create your own Slackbot w/ C#.__<br>
 
 Quick Guide
 ---
-__Initialization__<br>
-You can find your AuthToken [here](https://api.slack.com/docs/oauth-test-tokens). 
+__Initialization__ 
 ```cs
 SlackBot.Configuration = new SlackBotConfiguration()
 {
     AuthToken = "xoxb-42347798839-StUHhs5b16zCx9156PKa0u5c"
 };
+SlackBot.Run();
 ```
+You can find your AuthToken [here](https://api.slack.com/docs/oauth-test-tokens).
 
 __Respond to messages__
 ```cs
