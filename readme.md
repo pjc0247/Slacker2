@@ -33,7 +33,7 @@ public class Program : BotService {
 ```
 
 __Accept command parameters__<br>
-Since __Slacker2__ accepts regex to subscribe messages, you can also use `capturing` function.<br>
+Since `Subscribe` attribute accepts a regular expressions, you can also use `capturing` function.<br>
 Captured values will be bound to method's parameters in order.
 ```cs
 [Subscribe("^echo (.+)$")]
@@ -60,3 +60,20 @@ public void OnTimer()
 ```
 
 
+Advanced Features
+----
+__User permission__<br>
+Sometimes, you may want to make dangerous functions.<br>
+__Slacker2__ also provides a permission management feature. You can add the required permissions on your commands and __grant__/__remove__ each permissions to the right users.
+
+```cs
+GrantPermission(user, "SYSTEM_SHUTDOWN");
+// now `user` can invoke `!sys_shutdown` method.
+```
+```cs
+[Subscribe("^!sys_shutdown$")]
+[NeedsPermission("SYSTEM_SHUTDOWN")]
+public void OnShutdown(SlackMessage message) {
+    /* shutdown machine */
+}
+```
