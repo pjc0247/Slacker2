@@ -80,6 +80,10 @@ namespace Slacker2
 			LastScheduled = DateTime.Now;
 		}
 
+		private static void RegisterHandler(SlackMessageHandler handler)
+		{
+			Handlers[handler.Pattern] = handler;
+		}
 		private static void InitializeHandlers()
 		{
 			Handlers = new Dictionary<Regex, SlackMessageHandler>();
@@ -95,22 +99,21 @@ namespace Slacker2
 
 				var subscribers = service
 					.GetMethods()
+					.Where(x => x.GetCustomAttribute<SubscribeAttribute>() != null)
 					.Select(x => new SlackMessageHandler()
 					{
 						Handler = x,
-						SubscribeAttr = x.GetCustomAttribute<SubscribeAttribute>(),
-						UsageAttr = x.GetCustomAttribute<UsageAttribute>(),
-						PermissionAttr = x.GetCustomAttribute<NeedsPermissionAttribute>(),
+
+						Pattern = new Regex(x.GetCustomAttribute<SubscribeAttribute>().Pattern),
+						Usage = x.GetCustomAttribute<UsageAttribute>()?.Message,
+						PermissionGroupName = x.GetCustomAttribute<NeedsPermissionAttribute>()?.PermissionGroupName,
 
 						ServiceInstance = inst
-					})
-					.Where(x => x.SubscribeAttr != null);
+					});
 
 				foreach (var subscriber in subscribers)
 				{
-					var regex = new Regex(subscriber.SubscribeAttr.Pattern);
-
-					Handlers[regex] = subscriber;
+					RegisterHandler(subscriber);
 				}
 			}
 		}
@@ -124,21 +127,20 @@ namespace Slacker2
 		{
 			Console.WriteLine($"[{message.Sender}] : {message.Message}");
 
-			foreach (var handler in Handlers)
+			foreach (var handler in Handlers) 
 			{
 				var inst = handler.Value.ServiceInstance;
 				var regex = handler.Key;
-				var usageAttr = handler.Value.UsageAttr;
-				var permissionAttr = handler.Value.PermissionAttr;
+				var handlerInfo = handler.Value;
 				var methodInfo = handler.Value.Handler;
 
 				var matches = regex.Match(message.Message);
 
 				if (matches.Success == false)
 					continue;
-				if (permissionAttr != null)
+				if (handlerInfo.PermissionGroupName != null)
 				{
-					if (message.Sender.Permissions.Contains(permissionAttr.PermissionGroupName) == false)
+					if (message.Sender.Permissions.Contains(handlerInfo.PermissionGroupName) == false)
 						continue;
 				}
 
@@ -165,9 +167,9 @@ namespace Slacker2
 				}
 				catch (Exception e)
 				{
-					if (usageAttr != null)
+					if (handlerInfo.Usage != null)
 					{
-						Slack.SendMessage(message.Channel.Name, "@" + message.Sender + " : " + usageAttr.Message);
+						Slack.SendMessage(message.Channel.Name, "@" + message.Sender + " : " + handlerInfo.Usage);
 					}
 					errorContinue = true;
 				}
@@ -185,14 +187,32 @@ namespace Slacker2
 			}
 		}
 
+		public static void RegisterCommand(string pattern, BotService inst, MethodInfo method)
+		{
+			if (string.IsNullOrEmpty(pattern))
+				throw new ArgumentException(nameof(pattern));
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			RegisterHandler(new SlackMessageHandler()
+			{
+				Pattern = new Regex(pattern),
+
+				ServiceInstance = inst,
+				Handler = method
+			});
+		}
 		public static void Run()
 		{
 			if (Configuration == null)
 				throw new InvalidOperationException($"{nameof(Configuration)} -> null");
-
+			
 			InitializeSlack();
 			InitializeSchedulers();
 			InitializeHandlers();
+
+			if (Handlers.Count == 0)
+				throw new InvalidOperationException("No handlers found");
 		}
 	}
 }

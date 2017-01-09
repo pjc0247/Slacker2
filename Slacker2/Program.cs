@@ -17,9 +17,10 @@ namespace Slacker2
 	}
 	class SlackMessageHandler : SlackHandler
 	{
-		public SubscribeAttribute SubscribeAttr { get; set; }
-		public UsageAttribute UsageAttr { get; set; }
-		public NeedsPermissionAttribute PermissionAttr { get; set; }
+		public Regex Pattern { get; set; }
+
+		public string Usage { get; set; }
+		public string PermissionGroupName { get; set; }
 	}
 	class SlackScheduledTaskHandler : SlackHandler
 	{

@@ -29,9 +29,13 @@ namespace Slacker2
 
 			Users = new Dictionary<string, SlackUser>();
 			Slack = new SlackSocketClient(AuthToken);
+
+			Console.WriteLine("Trying to connect to the Slack server....");
 			Slack.Connect(
 				(LoginResponse response) =>
 				{
+					if (response.ok == false)
+						Console.WriteLine("Not OK");
 					Console.WriteLine("Connected");
 
 					Console.WriteLine(Slack.MyData.name);
@@ -58,8 +62,7 @@ namespace Slacker2
 					chInfo = Slack.GroupLookup[message.channel];
 				else
 					chInfo = Slack.ChannelLookup[message.channel];
-
-				Console.WriteLine(chInfo);
+				
 				var members = chInfo.members
 					.Select(x => GetUser(x)).ToArray();
 
