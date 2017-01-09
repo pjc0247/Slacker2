@@ -18,7 +18,7 @@ You can find your AuthToken [here](https://api.slack.com/docs/oauth-test-tokens)
 
 __Respond to messages__<br>
 Creating a new bot command is very simple. Even you don't need to register your commands manually.<br>
-Just define a method and let __Slacker2__ know the method is a subscriber. __Slacker2__ will find your all subscribers automatically.<br>
+Just define a method and let __Slacker2__ know the method is a subscriber. __Slacker2__ will find all your subscribers automatically.<br>
 <br>
 The example below shows that how to make a basic bot command.
 ```cs
