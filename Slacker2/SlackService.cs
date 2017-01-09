@@ -89,7 +89,7 @@ namespace Slacker2
 				_ => { },
 				channel,
 				message,
-			as_user: false);
+				as_user: true);
 		}
 		public void SendActionMessage(string channel, string message)
 		{

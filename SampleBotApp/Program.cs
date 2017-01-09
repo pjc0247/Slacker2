@@ -28,6 +28,12 @@ namespace SampleBotApp
 			SendMessage(message.Channel, "PERMISSINON");
 		}
 
+		[Subscribe("^sum (.+) (.+)$")]
+		public void OnSum(SlackMessage message, int a, int b)
+		{
+			message.Reply($"{a} + {b} = {a + b}");
+		}
+
 		[Subscribe("^aa")]
 		public void OnAA(SlackMessage message)
 		{
