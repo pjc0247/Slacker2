@@ -63,7 +63,7 @@ public void OnTimer()
 Advanced Features
 ----
 __User permission__<br>
-Sometimes, you may want to make dangerous functions.<br>
+Sometimes, you may want to make dangerous functions. Such as changing machine's state or handling your private data.<br>
 __Slacker2__ also provides a permission management feature. You can add the required permissions on your commands and __grant__/__remove__ each permissions to the right users.
 
 ```cs
