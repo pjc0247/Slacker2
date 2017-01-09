@@ -44,7 +44,9 @@ public void OnSum(SlackMessage message, int a, int b) {
 ```
 
 
-__Periodic tasks__
+__Periodic tasks__<br>
+If you need to execute a method in every specific minutes, just add `Schedule` attribute on your method.<br>
+__Slacker2__ will invoke the method repeatedly by internally managed timers.
 ```cs
 [Schedule(1)] // interval (seconds)
 public void OnTimer()
