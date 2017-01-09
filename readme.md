@@ -55,7 +55,7 @@ __Slacker2__ will invoke the method repeatedly by internally managed timers.
 [Schedule(1)] // interval (seconds)
 public void OnTimer()
 {
-    Console.WriteLine("IM TIMER JOB");
+    Console.WriteLine("Minsoo chunjaeya");
 }
 ```
 
