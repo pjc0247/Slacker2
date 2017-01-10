@@ -95,6 +95,21 @@ namespace Slacker2
 				message,
 				as_user: true);
 		}
+		public void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
+		{
+			Slack.PostMessage(
+				_ => { },
+				channel,
+				message,
+				as_user: true,
+				attachments: new Attachment[]{
+					new Attachment() {
+						title = title,
+						text = description,
+						color = colorHex
+					}
+				});;	
+		}
 		public void SendActionMessage(string channel, string message)
 		{
 			Slack.PostMessage(
