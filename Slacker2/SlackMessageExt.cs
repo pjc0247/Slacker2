@@ -12,5 +12,13 @@ namespace Slacker2
 				_this.Channel.Name,
 				message);
 		}
+
+		public static void AddReaction(this SlackMessage _this, string reactionName)
+		{
+			_this.Slack.AddReaction(
+				_this.Channel.Id,
+				_this.Timestamp,
+				reactionName);
+		}
 	}
 }

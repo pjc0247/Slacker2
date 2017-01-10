@@ -96,7 +96,6 @@ namespace Slacker2
 
 		public void AddReaction(string channel, string messageTimestamp, string reactionName)
 		{
-			Console.WriteLine(channel);
 			Slack.AddReaction(
 				_ => { },
 				reactionName,
