@@ -14,7 +14,7 @@ namespace Slacker2
 		}
 		protected void SendColoredMessage(SlackChannel channel, string message, string colorHex, string title, string description)
 		{
-			Slack.SendColoredMessage(channel.Name, mesasge, colorHex, title, description);
+			Slack.SendColoredMessage(channel.Name, message, colorHex, title, description);
 		}
 
 		protected void SendMessage(string channel, string message)
