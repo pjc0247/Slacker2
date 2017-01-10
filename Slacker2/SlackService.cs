@@ -35,7 +35,10 @@ namespace Slacker2
 				(LoginResponse response) =>
 				{
 					if (response.ok == false)
-						Console.WriteLine("Not OK");
+					{
+						Console.WriteLine("Auth error : " + response.error);
+					}
+					
 					Console.WriteLine("Connected");
 
 					Console.WriteLine(Slack.MyData.name);
