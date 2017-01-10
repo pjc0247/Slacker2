@@ -8,6 +8,12 @@ namespace Slacker2
 	{
 		internal SlackService Slack { get; set; }
 
+		protected void AddReaction(SlackMessage message, string reactionName)
+		{
+			reactionName = reactionName.Replace(":", "");
+			Slack.AddReaction(message.Channel.Id, message.Timestamp, reactionName);
+		}
+
 		protected void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
 		{
 			Slack.SendColoredMessage(channel, message, colorHex, title, description);

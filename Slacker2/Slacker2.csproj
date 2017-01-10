@@ -29,6 +29,7 @@
     <Compile Include="Models\SlackChannel.cs" />
     <Compile Include="Models\SlackMessage.cs" />
     <Compile Include="Models\SlackUser.cs" />
+    <Compile Include="Emoji.cs" />
   </ItemGroup>
 
   <ItemGroup>

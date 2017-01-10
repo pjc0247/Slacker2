@@ -57,7 +57,7 @@ namespace Slacker2
 		{
 			if (message.user == Slack.MyData.id)
 				return;
-			
+
 			try
 			{
 				Channel chInfo = null;
@@ -69,12 +69,16 @@ namespace Slacker2
 				var members = chInfo.members
 					.Select(x => GetUser(x)).ToArray();
 
+				// datetime -> slack_ts
+				string tsString = ((message.ts.ToUniversalTime().Ticks - 621355968000000000m) / 10000000m).ToString("0.000000");
+
 				OnSlackMessage?.Invoke(new SlackMessage()
 				{
 					Slack = this,
 
 					Channel = new SlackChannel()
 					{
+						Id = chInfo.id,
 						Name = chInfo.name,
 						IsPublicOpened = chInfo.is_open,
 						Topic = chInfo.topic.value,
@@ -82,10 +86,22 @@ namespace Slacker2
 					},
 
 					Sender = GetUser(message.user),
-					Message = message.text
+					Message = message.text,
+
+					Timestamp = tsString
 				});
 			}
 			catch (Exception e) { Console.WriteLine(e); }
+		}
+
+		public void AddReaction(string channel, string messageTimestamp, string reactionName)
+		{
+			Console.WriteLine(channel);
+			Slack.AddReaction(
+				_ => { },
+				reactionName,
+				channel,
+				messageTimestamp);
 		}
 
 		public void SendMessage(string channel, string message)
@@ -93,7 +109,7 @@ namespace Slacker2
 			Console.WriteLine("[Send] " + message);
 
 			Slack.PostMessage(
-				_ => { },
+				_ => { Console.WriteLine(_.ts); },
 				channel,
 				message,
 				as_user: true);

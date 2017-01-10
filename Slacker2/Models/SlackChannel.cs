@@ -5,6 +5,7 @@ namespace Slacker2.Models
 {
 	public class SlackChannel
 	{
+		public string Id { get; set; }
 		public string Name { get; set; }
 
 		public bool IsPublicOpened { get; set; }
