@@ -13,6 +13,10 @@ SlackBot.Configuration = new SlackBotConfiguration()
     AuthToken = "xoxb-AAAA-BBBBBBBB"
 };
 SlackBot.Run();
+
+// `SlackBot.Run` does not block the program.
+// You have to hold your bot yourself.
+Console.ReadLine();
 ```
 You can find your AuthToken [here](https://api.slack.com/docs/oauth-test-tokens).
 
