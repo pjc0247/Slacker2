@@ -87,3 +87,8 @@ if (user.Permissions.Contains("SYSTEM_SHUTDOWN"))
 else
     message.Reply("Sorry, but you don't have the proper permission.");    
 ```
+
+
+Integrations w/ Slacker2
+----
+* [AWS.CloudWatch](https://github.com/pjc0247/Slacker2.CloudWatcher)
