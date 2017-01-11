@@ -40,8 +40,7 @@ namespace Slacker2
 					}
 					
 					Console.WriteLine("Connected");
-
-					Console.WriteLine(Slack.MyData.name);
+					Console.WriteLine("  logged in as " + Slack.MyData.name);
 
 					waitEvent.Set();
 				});
@@ -108,7 +107,7 @@ namespace Slacker2
 			Console.WriteLine("[Send] " + message);
 
 			Slack.PostMessage(
-				_ => { Console.WriteLine(_.ts); },
+				_ => { },
 				channel,
 				message,
 				as_user: true);
@@ -128,8 +127,8 @@ namespace Slacker2
 					}
 				});;	
 		}
-		public void SendActionMessage(string channel, string message)
-		{
+		public void SendActionMessage(string channel, string message, SlackInteractiveMessage messageData)
+		{	
 			Slack.PostMessage(
 				_ => { },
 				channel,
@@ -138,9 +137,9 @@ namespace Slacker2
 				attachments: new Attachment[]
 				{
 					new Attachment() {
-						title = "test",
-						text = "text",
-						callback_id = "AA",
+						title = messageData.Text,
+						text = messageData.Description,
+						callback_id = messageData.CallbackId,
 
 						actions = new AttachmentAction[] {
 							new AttachmentAction("asdf", "asdf"),
@@ -152,9 +151,6 @@ namespace Slacker2
 
 		public SlackUser GetUser(string name)
 		{
-			Console.WriteLine(name);
-			Console.WriteLine(Slack.UserLookup.ContainsKey(name));
-
 			var userInfo = Slack.UserLookup[name];
 
 			if (Users.ContainsKey(name) == false)

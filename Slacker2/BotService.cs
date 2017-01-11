@@ -31,9 +31,9 @@ namespace Slacker2
 		{
 			Slack.SendMessage(channel.Name, message);
 		}
-		protected void SendActionMessage(SlackChannel channel, string message)
+		protected void SendActionMessage(SlackChannel channel, string message, SlackInteractiveMessage messageData)
 		{
-			Slack.SendActionMessage(channel.Name, message);
+			Slack.SendActionMessage(channel.Name, message, messageData);
 		}
 
 		protected void GrantPermission(SlackUser user, string permission)
