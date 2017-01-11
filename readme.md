@@ -71,15 +71,15 @@ Sometimes, you may want to make dangerous functions. Such as changing machine's 
 __Slacker2__ also provides a permission management feature. You can add the required permissions on your commands and __grant__/__remove__ each permissions to the right users.
 
 ```cs
-GrantPermission(user, "SYSTEM_SHUTDOWN");
-// now `user` can invoke `!sys_shutdown` method.
-```
-```cs
 [Subscribe("^!sys_shutdown$")]
 [NeedsPermission("SYSTEM_SHUTDOWN")]
 public void OnShutdown(SlackMessage message) {
     /* shutdown machine */
 }
+```
+```cs
+GrantPermission(user, "SYSTEM_SHUTDOWN");
+// now `user` can invoke `!sys_shutdown` method.
 ```
 
 User permissions can be evaluated at method's body instead `NeedsPermission` attribute. 
