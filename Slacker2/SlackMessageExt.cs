@@ -13,6 +13,14 @@ namespace Slacker2
 				message);
 		}
 
+		public static void ReplyThreadMessage(this SlackMessage _this, string message)
+		{
+			_this.Slack.SendThreadMessage(
+				_this.Channel.Name,
+				_this.Timestamp,
+				message);
+		}
+
 		public static void AddReaction(this SlackMessage _this, string reactionName)
 		{
 			_this.Slack.AddReaction(

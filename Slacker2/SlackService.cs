@@ -56,7 +56,7 @@ namespace Slacker2
 		{
 			if (message.user == Slack.MyData.id)
 				return;
-
+			
 			try
 			{
 				Channel chInfo = null;
@@ -100,6 +100,15 @@ namespace Slacker2
 				reactionName,
 				channel,
 				messageTimestamp);
+		}
+		public void SendThreadMessage(string channel, string messageTimestamp, string message)
+		{
+			Slack.PostMessage(
+				_ => { },
+				channel,
+				message,
+				as_user: true,
+				thread_ts: messageTimestamp);
 		}
 
 		public void SendMessage(string channel, string message)
