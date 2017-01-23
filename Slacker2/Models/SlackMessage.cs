@@ -15,5 +15,14 @@ namespace Slacker2.Models
 		public string Message { get; set; }
 
 		public string Timestamp { get; set; }
+		public string ThreadTimestamp { get; set; }
+
+		public bool IsThreadMessage
+		{
+			get
+			{
+				return ThreadTimestamp != null;
+			}
+		}
 	}
 }

@@ -70,7 +70,11 @@ namespace Slacker2
 
 				// datetime -> slack_ts
 				string tsString = ((message.ts.ToUniversalTime().Ticks - 621355968000000000m) / 10000000m).ToString("0.000000");
+				string threadTsString = null;
 
+				if (message.thread_ts != default(DateTime))
+					threadTsString = ((message.thread_ts.ToUniversalTime().Ticks - 621355968000000000m) / 10000000m).ToString("0.000000");
+				
 				OnSlackMessage?.Invoke(new SlackMessage()
 				{
 					Slack = this,
@@ -87,7 +91,8 @@ namespace Slacker2
 					Sender = GetUser(message.user),
 					Message = message.text,
 
-					Timestamp = tsString
+					Timestamp = tsString,
+					ThreadTimestamp = threadTsString
 				});
 			}
 			catch (Exception e) { Console.WriteLine(e); }
