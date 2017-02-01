@@ -13,6 +13,10 @@ namespace Slacker2
 			reactionName = reactionName.Replace(":", "");
 			Slack.AddReaction(message.Channel.Id, message.Timestamp, reactionName);
 		}
+        protected void UpdateMessage(SlackMessage message, string messageToUpdate)
+        {
+            Slack.UpdateMessage(message.Channel.Id, message.Timestamp, messageToUpdate);
+        }
 
 		protected void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
 		{

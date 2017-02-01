@@ -6,6 +6,13 @@ namespace Slacker2
 
 	public static class SlackMessageExt
 	{
+        public static void Update(this SlackMessage _this, string messageToUpdate)
+        {
+            _this.Slack.UpdateMessage(
+                _this.Channel.Id, _this.Timestamp,
+                messageToUpdate);
+        }
+
 		public static void Reply(this SlackMessage _this, string message)
 		{
 			_this.Slack.SendMessage(

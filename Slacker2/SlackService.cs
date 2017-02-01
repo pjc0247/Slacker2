@@ -126,6 +126,16 @@ namespace Slacker2
 				message,
 				as_user: true);
 		}
+
+        public void UpdateMessage(string channel, string messageTimestamp, string messageToUpdate)
+        {
+            Slack.Update(
+                _ => { },
+                messageTimestamp,
+                channel,
+                messageToUpdate);
+        }
+
 		public void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
 		{
 			Slack.PostMessage(
