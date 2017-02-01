@@ -171,7 +171,7 @@ namespace Slacker2
 						text = messageData.Description,
 						callback_id = messageData.CallbackId,
 
-						actions = actions
+						actions = actions.ToArray()
 					}
 				});
 		}
