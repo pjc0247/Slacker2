@@ -34,17 +34,6 @@ namespace SampleBotApp
 			message.Reply($"{a} + {b} = {a + b}");
 		}
 
-		[Subscribe("^aa")]
-		public void OnAA(SlackMessage message)
-		{
-			foreach (var user in message.Channel.Members)
-			{
-				Console.WriteLine(user.Name);
-			}
-
-			SendActionMessage(message.Channel, "AA");
-		}
-
 		[Schedule(1)]
 		public void OnTimer()
 		{
@@ -53,6 +42,8 @@ namespace SampleBotApp
 
 		static void Main(string[] args)
 		{
+            // If you wish to use the SlackApp feature (such as interactive buttons...)
+            // please remove comments below lines.
 			/*
 			var url = SlackAPI.SlackClient.GetAuthorizeUri(
 				"41105373671.102273797813",
@@ -70,25 +61,13 @@ namespace SampleBotApp
 				"c10342c1f35f75a3cf3ca087f5547c43",
 				"https://Functionsa0f1f77a.azurewebsites.net/api/HttpTriggerCSharp1?code=8d94a123103adc9f62f1a38bd18dccc8b19e58f8",
 				code);
-*/
-
+            */
 
 			SlackBot.Configuration = new SlackBotConfiguration()
 			{
-				AuthToken = "xoxb-42347798839-StUHhs5b16zCx9156PKa0u5c"
+				AuthToken = "YOUR TOKEN GOES HERE"
 			};
 			SlackBot.Run();
-
-			/*
-			var http = new System.Net.HttpListener();
-			http.Prefixes.Add("http://+:9916/test/");
-			http.Start();
-
-			var ctx = http.GetContext();
-
-			Console.WriteLine("GOT CONNECTION");
-			Console.WriteLine(ctx.Request.Url);
-*/
 
 			while (true)
 				Console.ReadLine();
