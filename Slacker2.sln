@@ -1,11 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.26127.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slacker2", "Slacker2\Slacker2.csproj", "{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackAPI", "..\..\Downloads\SlackAPI-master\SlackAPI\SlackAPI.csproj", "{0C0A58A8-174E-4A4C-907B-C3569144D15D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBotApp", "SampleBotApp\SampleBotApp.csproj", "{FAC08535-83FE-4CC9-82C8-7EE39F4D6216}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackAPI", "SlackAPI\SlackAPI\SlackAPI.csproj", "{0C0A58A8-174E-4A4C-907B-C3569144D15D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +18,16 @@ Global
 		{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FAC08535-83FE-4CC9-82C8-7EE39F4D6216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FAC08535-83FE-4CC9-82C8-7EE39F4D6216}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAC08535-83FE-4CC9-82C8-7EE39F4D6216}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAC08535-83FE-4CC9-82C8-7EE39F4D6216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0A58A8-174E-4A4C-907B-C3569144D15D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
