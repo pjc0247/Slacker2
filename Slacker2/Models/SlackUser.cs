@@ -7,6 +7,8 @@ namespace Slacker2.Models
 	{
 		public string Name { get; set; }
 
+        public string Email { get; set; }
+
         public bool IsBot { get; set; }
         public bool IsMe { get; set; }
 
