@@ -7,6 +7,9 @@ namespace Slacker2.Models
 	{
 		public string Name { get; set; }
 
+        public bool IsBot { get; set; }
+        public bool IsMe { get; set; }
+
 		public HashSet<string> Permissions { get; }
 
 		public SlackUser()

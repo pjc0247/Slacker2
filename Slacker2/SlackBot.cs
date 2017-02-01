@@ -105,6 +105,7 @@ namespace Slacker2
 						Handler = x,
 
 						Pattern = new Regex(x.GetCustomAttribute<SubscribeAttribute>().Pattern),
+                        Target = x.GetCustomAttribute<SubscribeAttribute>().Target,
 						Usage = x.GetCustomAttribute<UsageAttribute>()?.Message,
 						PermissionGroupName = x.GetCustomAttribute<NeedsPermissionAttribute>()?.PermissionGroupName,
 
@@ -134,7 +135,20 @@ namespace Slacker2
 				var handlerInfo = handler.Value;
 				var methodInfo = handler.Value.Handler;
 
-				var matches = regex.Match(message.Message);
+                // SUBSCRIBER TARGET
+                if (handlerInfo.Target == SubscribeTarget.All)
+                    ; // skip
+                if (handlerInfo.Target == SubscribeTarget.Myself &&
+                    message.Sender.IsMe == false)
+                    continue;
+                if (handlerInfo.Target == SubscribeTarget.BotUser &&
+                    message.Sender.IsBot == false)
+                    continue;
+                if (handlerInfo.Target == SubscribeTarget.OtherUser &&
+                    message.Sender.IsMe)
+                    continue;
+                
+                var matches = regex.Match(message.Message);
 
 				if (matches.Success == false)
 					continue;
@@ -189,7 +203,7 @@ namespace Slacker2
 			}
 		}
 
-		public static void RegisterCommand(string pattern, BotService inst, MethodInfo method)
+		public static void RegisterCommand(string pattern, SubscribeTarget target, BotService inst, MethodInfo method)
 		{
 			if (string.IsNullOrEmpty(pattern))
 				throw new ArgumentException(nameof(pattern));
@@ -199,6 +213,7 @@ namespace Slacker2
 			RegisterHandler(new SlackMessageHandler()
 			{
 				Pattern = new Regex(pattern),
+                Target = target,
 
 				ServiceInstance = inst,
 				Handler = method

@@ -18,6 +18,7 @@ namespace Slacker2
 	class SlackMessageHandler : SlackHandler
 	{
 		public Regex Pattern { get; set; }
+        public SubscribeTarget Target { get; set; }
 
 		public string Usage { get; set; }
 		public string PermissionGroupName { get; set; }

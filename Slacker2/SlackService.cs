@@ -54,7 +54,8 @@ namespace Slacker2
 
 		void OnMessageReceived(NewMessage message)
 		{
-			if (message.user == Slack.MyData.id)
+			if (SlackBot.Configuration.AlwaysIgnoreMyMessage && 
+                message.user == Slack.MyData.id)
 				return;
 			
 			try
@@ -177,8 +178,14 @@ namespace Slacker2
 		{
 			var userInfo = Slack.UserLookup[name];
 
-			if (Users.ContainsKey(name) == false)
-				Users[name] = new SlackUser() { Name = userInfo.name };
+            if (Users.ContainsKey(name) == false)
+            {
+                Users[name] = new SlackUser() {
+                    Name = userInfo.name,
+                    IsBot = userInfo.is_bot,
+                    IsMe = userInfo.id == Slack.MyData.id
+                };
+            }
 
 			return Users[name];
 		}

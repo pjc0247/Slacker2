@@ -8,9 +8,12 @@ namespace Slacker2
 
 		public int SchedulerResolution { get; set; }
 
+        public bool AlwaysIgnoreMyMessage { get; set; }
+
 		public SlackBotConfiguration()
 		{
 			SchedulerResolution = 5;
+            AlwaysIgnoreMyMessage = false;
 		}
 	}
 }
