@@ -1,13 +1,10 @@
 ﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <ProjectGuid>{EB26A692-E9BC-45A8-ABB1-B5553E51DA87}</ProjectGuid>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>.</OutputPath>
   </PropertyGroup>
@@ -15,25 +12,24 @@
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" />
+    <Compile Include="Emoji.cs" />
+    <Compile Include="Handlers.cs" />
+    <Compile Include="Models\SlackChannel.cs" />
+    <Compile Include="Models\SlackInteractiveMessage.cs" />
+    <Compile Include="Models\SlackMessage.cs" />
+    <Compile Include="Models\SlackUser.cs" />
+    <Compile Include="NeedsPermissionAttribute.cs" />
+    <Compile Include="ScheduleAttribute.cs" />
+    <Compile Include="SlackBot.cs" />
+    <Compile Include="SlackBotConfiguration.cs" />
+    <Compile Include="SlackMessageExt.cs" />
+    <Compile Include="SlackService.cs" />
     <EmbeddedResource Include="**\*.resx" />
     <Compile Include="SubscribeAttribute.cs" />
     <Compile Include="UsageAttribute.cs" />
     <Compile Include="BotService.cs" />
-    <Compile Include="NeedsPermissionAttribute.cs" />
-    <Compile Include="SlackMessageExt.cs" />
-    <Compile Include="ScheduleAttribute.cs" />
-    <Compile Include="SlackBot.cs" />
-    <Compile Include="SlackBotConfiguration.cs" />
-    <Compile Include="SlackService.cs" />
-    <Compile Include="Models\SlackChannel.cs" />
-    <Compile Include="Models\SlackMessage.cs" />
-    <Compile Include="Models\SlackUser.cs" />
-    <Compile Include="Emoji.cs" />
     <Compile Include="Models\SlackActionButton.cs" />
-    <Compile Include="Models\SlackInteractiveMessage.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,8 +49,6 @@
       <Name>SlackAPI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
