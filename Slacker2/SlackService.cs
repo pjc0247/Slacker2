@@ -153,7 +153,12 @@ namespace Slacker2
 				});;	
 		}
 		public void SendActionMessage(string channel, string message, SlackInteractiveMessage messageData)
-		{	
+		{
+            List<AttachmentAction> actions = new List<AttachmentAction>();
+
+            foreach (var button in messageData.Buttons)
+                actions.Add(new AttachmentAction(button.Name, button.Text));
+
 			Slack.PostMessage(
 				_ => { },
 				channel,
@@ -166,10 +171,7 @@ namespace Slacker2
 						text = messageData.Description,
 						callback_id = messageData.CallbackId,
 
-						actions = new AttachmentAction[] {
-							new AttachmentAction("asdf", "asdf"),
-							new AttachmentAction("qwer", "qwer")
-						}
+						actions = actions
 					}
 				});
 		}
@@ -182,6 +184,9 @@ namespace Slacker2
             {
                 Users[name] = new SlackUser() {
                     Name = userInfo.name,
+
+                    Email = userInfo.profile.email,
+
                     IsBot = userInfo.is_bot,
                     IsMe = userInfo.id == Slack.MyData.id
                 };
