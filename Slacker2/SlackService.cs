@@ -101,6 +101,9 @@ namespace Slacker2
 
 		public void AddReaction(string channel, string messageTimestamp, string reactionName)
 		{
+            if (reactionName.StartsWith(":") && reactionName.EndsWith(":"))
+                reactionName = reactionName.Substring(1, reactionName.Length - 2);
+
 			Slack.AddReaction(
 				_ => { },
 				reactionName,
