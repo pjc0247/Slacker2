@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Slacker2
 {
@@ -27,13 +28,13 @@ namespace Slacker2
 			Slack.SendColoredMessage(channel.Name, message, colorHex, title, description);
 		}
 
-		protected void SendMessage(string channel, string message)
+		protected Task<SlackMessage> SendMessage(string channel, string message)
 		{
-			Slack.SendMessage(channel, message);
+			return Slack.SendMessage(channel, message);
 		}
-		protected void SendMessage(SlackChannel channel, string message)
+		protected Task<SlackMessage> SendMessage(SlackChannel channel, string message)
 		{
-			Slack.SendMessage(channel.Name, message);
+			return Slack.SendMessage(channel.Name, message);
 		}
 		protected void SendActionMessage(SlackChannel channel, string message, SlackInteractiveMessage messageData)
 		{

@@ -4,6 +4,21 @@ namespace Slacker2.Models
 {
 	public class SlackMessage
 	{
+        internal static SlackMessage Create(
+            SlackService slack, 
+            string channel, SlackAPI.PostMessageResponse.Message message)
+        {
+            return new SlackMessage()
+            {
+                Slack = slack,
+
+                Sender = slack.GetUser(message.user),
+                Channel = slack.GetChannelByName(channel),
+                Timestamp = message.ts,
+                Message = message.text
+            };
+        }
+
 		internal SlackService Slack { get; set; }
 
 		/// <summary>

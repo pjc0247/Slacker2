@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using SlackAPI;
@@ -61,10 +62,13 @@ namespace Slacker2
 			try
 			{
 				Channel chInfo = null;
-				if (Slack.GroupLookup.ContainsKey(message.channel))
-					chInfo = Slack.GroupLookup[message.channel];
-				else
-					chInfo = Slack.ChannelLookup[message.channel];
+
+                if (Slack.DirectMessageLookup.ContainsKey(message.channel))
+                    return;
+                else if (Slack.GroupLookup.ContainsKey(message.channel))
+                    chInfo = Slack.GroupLookup[message.channel];
+                else
+                    chInfo = Slack.ChannelLookup[message.channel];
 				
 				var members = chInfo.members
 					.Select(x => GetUser(x)).ToArray();
@@ -120,24 +124,41 @@ namespace Slacker2
 				thread_ts: messageTimestamp);
 		}
 
-		public void SendMessage(string channel, string message)
+		public Task<SlackMessage> SendMessage(string channel, string message)
 		{
 			Console.WriteLine("[Send] " + message);
 
+            var ts = new TaskCompletionSource<SlackMessage>();
+
 			Slack.PostMessage(
-				_ => { },
+				_ => {
+                    try
+                    {
+                        ts.SetResult(SlackMessage.Create(this, channel, _.message));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                },
 				channel,
 				message,
 				as_user: true);
+
+            return ts.Task;
 		}
 
-        public void UpdateMessage(string channel, string messageTimestamp, string messageToUpdate)
+        public Task UpdateMessage(string channel, string messageTimestamp, string messageToUpdate)
         {
+            var ts = new TaskCompletionSource<object>();
+
             Slack.Update(
-                _ => { },
+                _ => { ts.SetResult(0); },
                 messageTimestamp,
                 channel,
                 messageToUpdate);
+
+            return ts.Task;
         }
 
 		public void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
@@ -157,7 +178,7 @@ namespace Slacker2
 		}
 		public void SendActionMessage(string channel, string message, SlackInteractiveMessage messageData)
 		{
-            List<AttachmentAction> actions = new List<AttachmentAction>();
+            var actions = new List<AttachmentAction>();
 
             foreach (var button in messageData.Buttons)
                 actions.Add(new AttachmentAction(button.Name, button.Text));
@@ -179,6 +200,38 @@ namespace Slacker2
 				});
 		}
 
+        public SlackChannel GetChannelByName(string channel)
+        {
+            var ch = Slack.Groups
+                .Where(x => x.name == channel)
+                .First();
+            var members = ch.members
+                    .Select(x => GetUser(x)).ToArray();
+
+            return new SlackChannel()
+            {
+                Id = ch.id,
+                Name = ch.name,
+                IsPublicOpened = !ch.IsPrivateGroup,
+                Members = members,
+                Topic = ch.topic.value
+            };
+        }
+        public SlackChannel GetChannelById(string channel)
+        {
+            var ch = Slack.ChannelLookup[channel];
+            var members = ch.members
+                    .Select(x => GetUser(x)).ToArray();
+
+            return new SlackChannel()
+            {
+                Id = ch.id,
+                Name = ch.name,
+                IsPublicOpened = !ch.IsPrivateGroup,
+                Members = members,
+                Topic = ch.topic.value
+            };
+        }
 		public SlackUser GetUser(string name)
 		{
 			var userInfo = Slack.UserLookup[name];

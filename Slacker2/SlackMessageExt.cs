@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Slacker2
 {
@@ -6,9 +7,9 @@ namespace Slacker2
 
 	public static class SlackMessageExt
 	{
-        public static void Update(this SlackMessage _this, string messageToUpdate)
+        public static Task Update(this SlackMessage _this, string messageToUpdate)
         {
-            _this.Slack.UpdateMessage(
+            return _this.Slack.UpdateMessage(
                 _this.Channel.Id, _this.Timestamp,
                 messageToUpdate);
         }
