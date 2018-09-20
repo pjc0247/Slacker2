@@ -61,18 +61,6 @@ namespace Slacker2
 			
 			try
 			{
-				Channel chInfo = null;
-
-                if (Slack.DirectMessageLookup.ContainsKey(message.channel))
-                    return;
-                else if (Slack.GroupLookup.ContainsKey(message.channel))
-                    chInfo = Slack.GroupLookup[message.channel];
-                else
-                    chInfo = Slack.ChannelLookup[message.channel];
-				
-				var members = chInfo.members
-					.Select(x => GetUser(x)).ToArray();
-
 				// datetime -> slack_ts
 				string tsString = ((message.ts.ToUniversalTime().Ticks - 621355968000000000m) / 10000000m).ToString("0.000000");
 				string threadTsString = null;
@@ -84,15 +72,7 @@ namespace Slacker2
 				{
 					Slack = this,
 
-					Channel = new SlackChannel()
-					{
-						Id = chInfo.id,
-						Name = chInfo.name,
-						IsPublicOpened = chInfo.is_open,
-						Topic = chInfo.topic.value,
-						Members = members
-					},
-
+					Channel = GetChannel(message.channel),
 					Sender = GetUser(message.user),
 					Message = message.text,
 
@@ -200,28 +180,25 @@ namespace Slacker2
 				});
 		}
 
-        public SlackChannel GetChannelByName(string channel)
+        public SlackChannel GetChannel(string channel)
         {
-            var ch = Slack.Groups
-                .Where(x => x.name == channel)
-                .First();
-            var members = ch.members
-                    .Select(x => GetUser(x)).ToArray();
+            Channel ch = null;
 
-            return new SlackChannel()
-            {
-                Id = ch.id,
-                Name = ch.name,
-                IsPublicOpened = !ch.IsPrivateGroup,
-                Members = members,
-                Topic = ch.topic.value
-            };
-        }
-        public SlackChannel GetChannelById(string channel)
-        {
-            var ch = Slack.ChannelLookup[channel];
+            if (Slack.DirectMessageLookup.ContainsKey(channel))
+                return null; // TODO
+            else if (Slack.GroupLookup.ContainsKey(channel))
+                ch = Slack.GroupLookup[channel];
+            else if (Slack.ChannelLookup.ContainsKey(channel))
+                ch = Slack.ChannelLookup[channel];
+            else if (Slack.Groups.Any(x => x.name == channel))
+                ch = Slack.Groups.First(x => x.name == channel);
+            else if (Slack.Channels.Any(x => x.name == channel))
+                ch = Slack.Channels.First(x => x.name == channel);
+            else
+                return null;
+
             var members = ch.members
-                    .Select(x => GetUser(x)).ToArray();
+                .Select(x => GetUser(x)).ToArray();
 
             return new SlackChannel()
             {

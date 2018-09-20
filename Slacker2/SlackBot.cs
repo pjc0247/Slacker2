@@ -82,6 +82,12 @@ namespace Slacker2
 
 		private static void RegisterHandler(SlackMessageHandler handler)
 		{
+            if (handler.Pattern.GetGroupNames().Length != handler.Handler.GetParameters().Length)
+            {
+                Console.WriteLine($"`{handler.Pattern}` does not match to method signature({handler.Handler.ToString()}).");
+                throw new InvalidOperationException("Invalid handler");
+            }
+
 			Handlers[handler.Pattern] = handler;
 		}
 		private static void InitializeHandlers()
@@ -124,7 +130,7 @@ namespace Slacker2
 
 			Slack.OnSlackMessage = OnSlackMessage;
 		}
-		static void OnSlackMessage(SlackMessage message)
+		private static void OnSlackMessage(SlackMessage message)
 		{
 			Console.WriteLine($"[{message.Sender}] : {message.Message}");
 
@@ -210,9 +216,10 @@ namespace Slacker2
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
-			RegisterHandler(new SlackMessageHandler()
+            var regex = new Regex(pattern);
+            RegisterHandler(new SlackMessageHandler()
 			{
-				Pattern = new Regex(pattern),
+				Pattern = regex,
                 Target = target,
 
 				ServiceInstance = inst,

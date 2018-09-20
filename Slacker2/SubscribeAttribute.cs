@@ -23,7 +23,6 @@ namespace Slacker2
 			Pattern = pattern;
             Target = SubscribeTarget.OtherUser;
 		}
-       
         public SubscribeAttribute(string pattern, SubscribeTarget target)
         {
             Pattern = pattern;

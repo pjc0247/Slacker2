@@ -13,7 +13,7 @@ namespace Slacker2.Models
                 Slack = slack,
 
                 Sender = slack.GetUser(message.user),
-                Channel = slack.GetChannelByName(channel),
+                Channel = slack.GetChannel(channel),
                 Timestamp = message.ts,
                 Message = message.text
             };
