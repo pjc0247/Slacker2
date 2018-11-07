@@ -19,13 +19,13 @@ namespace Slacker2
             Slack.UpdateMessage(message.Channel.Id, message.Timestamp, messageToUpdate);
         }
 
-		protected void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
+		protected Task<SlackMessage> SendColoredMessage(string channel, string message, string colorHex, string title, string description)
 		{
-			Slack.SendColoredMessage(channel, message, colorHex, title, description);
+			return Slack.SendColoredMessage(channel, message, colorHex, title, description);
 		}
-		protected void SendColoredMessage(SlackChannel channel, string message, string colorHex, string title, string description)
+		protected Task<SlackMessage> SendColoredMessage(SlackChannel channel, string message, string colorHex, string title, string description)
 		{
-			Slack.SendColoredMessage(channel.Name, message, colorHex, title, description);
+			return Slack.SendColoredMessage(channel.Name, message, colorHex, title, description);
 		}
 
 		protected Task<SlackMessage> SendMessage(string channel, string message)
@@ -36,9 +36,9 @@ namespace Slacker2
 		{
 			return Slack.SendMessage(channel.Name, message);
 		}
-		protected void SendActionMessage(SlackChannel channel, string message, SlackInteractiveMessage messageData)
+		protected Task<SlackMessage> SendActionMessage(SlackChannel channel, string message, SlackInteractiveMessage messageData)
 		{
-			Slack.SendActionMessage(channel.Name, message, messageData);
+			return Slack.SendActionMessage(channel.Name, message, messageData);
 		}
 
 		protected void GrantPermission(SlackUser user, string permission)
