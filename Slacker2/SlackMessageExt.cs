@@ -14,24 +14,24 @@ namespace Slacker2
                 messageToUpdate);
         }
 
-		public static void Reply(this SlackMessage _this, string message)
+		public static Task Reply(this SlackMessage _this, string message)
 		{
-			_this.Slack.SendMessage(
+			return _this.Slack.SendMessage(
 				_this.Channel.Name,
 				message);
 		}
 
-		public static void ReplyThreadMessage(this SlackMessage _this, string message)
+		public static Task ReplyThreadMessage(this SlackMessage _this, string message)
 		{
-			_this.Slack.SendThreadMessage(
+			return _this.Slack.SendThreadMessage(
 				_this.Channel.Name,
 				_this.Timestamp,
 				message);
 		}
 
-		public static void AddReaction(this SlackMessage _this, string reactionName)
+		public static Task AddReaction(this SlackMessage _this, string reactionName)
 		{
-			_this.Slack.AddReaction(
+			return _this.Slack.AddReaction(
 				_this.Channel.Id,
 				_this.Timestamp,
 				reactionName);

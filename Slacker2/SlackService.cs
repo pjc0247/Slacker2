@@ -83,25 +83,33 @@ namespace Slacker2
 			catch (Exception e) { Console.WriteLine(e); }
 		}
 
-		public void AddReaction(string channel, string messageTimestamp, string reactionName)
+		public Task AddReaction(string channel, string messageTimestamp, string reactionName)
 		{
+            var ts = new TaskCompletionSource<int>();
+
             if (reactionName.StartsWith(":") && reactionName.EndsWith(":"))
                 reactionName = reactionName.Substring(1, reactionName.Length - 2);
 
 			Slack.AddReaction(
-				_ => { },
+				_ => { ts.SetResult(1); },
 				reactionName,
 				channel,
 				messageTimestamp);
+
+            return ts.Task;
 		}
-		public void SendThreadMessage(string channel, string messageTimestamp, string message)
+		public Task<SlackMessage> SendThreadMessage(string channel, string messageTimestamp, string message)
 		{
-			Slack.PostMessage(
-				_ => { },
+            var ts = new TaskCompletionSource<SlackMessage>();
+
+            Slack.PostMessage(
+				_ => { ProcessCompletion(ts, channel, _); },
 				channel,
 				message,
 				as_user: true,
 				thread_ts: messageTimestamp);
+
+            return ts.Task;
 		}
 
 		public Task<SlackMessage> SendMessage(string channel, string message)

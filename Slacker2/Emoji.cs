@@ -16,5 +16,7 @@ namespace Slacker2
 		public static readonly string Clapping = ":clap:";
 		public static readonly string Boy = ":boy:";
 		public static readonly string Girl = ":girl:";
-	}
+        public static readonly string Checkbox = ":ballot_box_with_check:";
+
+    }
 }
