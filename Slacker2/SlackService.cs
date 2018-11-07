@@ -111,16 +111,7 @@ namespace Slacker2
             var ts = new TaskCompletionSource<SlackMessage>();
 
 			Slack.PostMessage(
-				_ => {
-                    try
-                    {
-                        ts.SetResult(SlackMessage.Create(this, channel, _.message));
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-                },
+				_ => { ProcessCompletion(ts, channel, _); },
 				channel,
 				message,
 				as_user: true);
@@ -141,10 +132,12 @@ namespace Slacker2
             return ts.Task;
         }
 
-		public void SendColoredMessage(string channel, string message, string colorHex, string title, string description)
+		public Task<SlackMessage> SendColoredMessage(string channel, string message, string colorHex, string title, string description)
 		{
-			Slack.PostMessage(
-				_ => { },
+            var ts = new TaskCompletionSource<SlackMessage>();
+
+            Slack.PostMessage(
+				_ => { ProcessCompletion(ts, channel, _); },
 				channel,
 				message,
 				as_user: true,
@@ -154,17 +147,20 @@ namespace Slacker2
 						text = description,
 						color = colorHex
 					}
-				});;	
+				});;
+
+            return ts.Task;
 		}
-		public void SendActionMessage(string channel, string message, SlackInteractiveMessage messageData)
+		public Task<SlackMessage> SendActionMessage(string channel, string message, SlackInteractiveMessage messageData)
 		{
+            var ts = new TaskCompletionSource<SlackMessage>();
             var actions = new List<AttachmentAction>();
 
             foreach (var button in messageData.Buttons)
                 actions.Add(new AttachmentAction(button.Name, button.Text));
 
 			Slack.PostMessage(
-				_ => { },
+				_ => { ProcessCompletion(ts, channel, _); },
 				channel,
 				message,
 				as_user: true,
@@ -178,7 +174,22 @@ namespace Slacker2
 						actions = actions.ToArray()
 					}
 				});
+
+            return ts.Task;
 		}
+
+        private void ProcessCompletion(TaskCompletionSource<SlackMessage> ts, string channel, PostMessageResponse msg)
+        {
+            try
+            {
+                ts.SetResult(SlackMessage.Create(this, channel, msg.message));
+            }
+            catch (Exception e)
+            {
+                ts.SetException(e);
+                Console.WriteLine(e);
+            }
+        }
 
         public SlackChannel GetChannel(string channel)
         {
@@ -198,7 +209,8 @@ namespace Slacker2
                 return null;
 
             var members = ch.members
-                .Select(x => GetUser(x)).ToArray();
+                .Select(x => GetUser(x))
+                .Where(x => x != null).ToArray();
 
             return new SlackChannel()
             {
@@ -211,8 +223,10 @@ namespace Slacker2
         }
 		public SlackUser GetUser(string name)
 		{
-			var userInfo = Slack.UserLookup[name];
+            if (Slack.UserLookup.ContainsKey(name) == false)
+                return null;
 
+			var userInfo = Slack.UserLookup[name];
             if (Users.ContainsKey(name) == false)
             {
                 Users[name] = new SlackUser() {
