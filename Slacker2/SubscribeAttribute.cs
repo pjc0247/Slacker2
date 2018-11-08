@@ -13,20 +13,20 @@ namespace Slacker2
         OtherUser
     }
 
-	public class SubscribeAttribute : Attribute
-	{
-		public string Pattern { get; }
+    public class SubscribeAttribute : Attribute
+    {
+        public string Pattern { get; }
         public SubscribeTarget Target { get; }
 
-		public SubscribeAttribute(string pattern)
-		{
-			Pattern = pattern;
+        public SubscribeAttribute(string pattern)
+        {
+            Pattern = pattern;
             Target = SubscribeTarget.OtherUser;
-		}
+        }
         public SubscribeAttribute(string pattern, SubscribeTarget target)
         {
             Pattern = pattern;
             Target = target;
         }
-	}
+    }
 }

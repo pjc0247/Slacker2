@@ -10,23 +10,23 @@ using SlackAPI.WebSocketMessages;
 
 namespace Slacker2
 {
-	class SlackHandler
-	{
-		public MethodInfo Handler { get; set; }
-		public BotService ServiceInstance { get; set; }
-	}
-	class SlackMessageHandler : SlackHandler
-	{
-		public Regex Pattern { get; set; }
+    class SlackHandler
+    {
+        public MethodInfo Handler { get; set; }
+        public BotService ServiceInstance { get; set; }
+    }
+    class SlackMessageHandler : SlackHandler
+    {
+        public Regex Pattern { get; set; }
         public SubscribeTarget Target { get; set; }
 
-		public string Usage { get; set; }
-		public string PermissionGroupName { get; set; }
-	}
-	class SlackScheduledTaskHandler : SlackHandler
-	{
-		public ScheduleAttribute ScheduleAttr { get; set; }
+        public string Usage { get; set; }
+        public string PermissionGroupName { get; set; }
+    }
+    class SlackScheduledTaskHandler : SlackHandler
+    {
+        public ScheduleAttribute ScheduleAttr { get; set; }
 
-		public TimeSpan TicksLeft { get; set; }
-	}
+        public TimeSpan TicksLeft { get; set; }
+    }
 }
