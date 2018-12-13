@@ -73,7 +73,14 @@ namespace Slacker2
                 {
                     task.TicksLeft = originalInverval;
 
-                    task.Handler?.Invoke(task.ServiceInstance, new object[] { });
+                    try
+                    {
+                        task.Handler?.Invoke(task.ServiceInstance, new object[] { });
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
 
