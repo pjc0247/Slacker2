@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Emoji.cs" />
+    <Compile Include="Ext\BotTask.cs" />
     <Compile Include="Handlers.cs" />
     <Compile Include="Models\SlackChannel.cs" />
     <Compile Include="Models\SlackInteractiveMessage.cs" />
