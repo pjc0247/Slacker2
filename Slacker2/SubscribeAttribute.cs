@@ -13,6 +13,12 @@ namespace Slacker2
         OtherUser
     }
 
+    public class SubscribeMentionAttribute : Attribute
+    {
+        public SubscribeMentionAttribute()
+        {
+        }
+    }
     public class SubscribeAttribute : Attribute
     {
         public string Pattern { get; }

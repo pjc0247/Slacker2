@@ -53,7 +53,7 @@ namespace Slacker2
             waitEvent.Dispose();
         }
 
-        void OnMessageReceived(NewMessage message)
+        private void OnMessageReceived(NewMessage message)
         {
             if (SlackBot.Configuration.AlwaysIgnoreMyMessage && 
                 message.user == Slack.MyData.id)
@@ -127,13 +127,16 @@ namespace Slacker2
             return ts.Task;
         }
 
-        public Task UpdateMessage(string channel, string messageTimestamp, string messageToUpdate)
+        /// <summary>
+        /// Modifies the message which is previously sent
+        /// </summary>
+        public Task UpdateMessage(string channel, string timestamp, string messageToUpdate)
         {
             var ts = new TaskCompletionSource<object>();
 
             Slack.Update(
                 _ => { ts.SetResult(0); },
-                messageTimestamp,
+                timestamp,
                 channel,
                 messageToUpdate);
 

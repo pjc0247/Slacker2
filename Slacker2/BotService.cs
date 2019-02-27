@@ -5,6 +5,12 @@ namespace Slacker2
 {
     using Models;
 
+    /// <summary>
+    /// </summary>
+    /// <remarks>
+    /// Without `Async` suffix methods do not mean 'Sync'.
+    /// It's just means you don't care about its results.
+    /// </remarks>
     public class BotService
     {
         internal SlackService Slack { get; set; }
