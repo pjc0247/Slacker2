@@ -63,6 +63,29 @@ public void OnTimer()
 }
 ```
 
+Interactive Message
+----
+```
+Currently, Slacker2 only supports `buton` type messages.
+```
+
+```cs
+var choice = await SendActionMessageAndWait(
+    "channel, "choose one of the following items",
+    new SlackInteractiveMessage() {
+        Buttons = new SlackActionButton[] {
+            new SlackActionButton() {
+                Name = "orange", Text = "Give me an Orange!"
+            },
+            new SlackActionButton() {
+                Name = "banana", Text = "Give me a Banana!"
+            }
+        }
+    });
+    
+if (choice == "orange") { /* ... */ }
+else if (choice == "banana") { /* .... */ }
+```
 
 Advanced Features
 ----
