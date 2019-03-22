@@ -15,6 +15,7 @@
     <Compile Include="Emoji.cs" />
     <Compile Include="Ext\BotTask.cs" />
     <Compile Include="Handlers.cs" />
+    <Compile Include="Interactive\SQSSubscriber.cs" />
     <Compile Include="Models\SlackChannel.cs" />
     <Compile Include="Models\SlackInteractiveMessage.cs" />
     <Compile Include="Models\SlackMessage.cs" />
@@ -32,6 +33,12 @@
     <Compile Include="Models\SlackActionButton.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.32.2\lib\net45\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SQS, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.SQS.3.3.3.62\lib\net45\AWSSDK.SQS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Newtonsoft.Json">
@@ -49,6 +56,9 @@
       <Project>{0c0a58a8-174e-4a4c-907b-c3569144d15d}</Project>
       <Name>SlackAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.SQS.3.3.3.62\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

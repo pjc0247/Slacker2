@@ -19,6 +19,10 @@ namespace Slacker2
         /// </summary>
         public bool AlwaysIgnoreMyMessage { get; set; }
 
+        public string AWSAccessKey { get; set; }
+        public string AWSAccessSecret { get; set; }
+        public string SQSUrl { get; set; }
+
         public SlackBotConfiguration()
         {
             SchedulerResolution = 5;

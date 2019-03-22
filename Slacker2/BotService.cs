@@ -79,6 +79,11 @@ namespace Slacker2
             SendActionMessageAsync(channel, message, messageData);
         }
 
+        protected Task<string> SendActionMessageAndWait(SlackChannel channel, string message, SlackInteractiveMessage messageData)
+        {
+            return Slack.SendActionMessageAndWait(channel.Name, message, messageData);
+        }
+
         protected void GrantPermission(SlackUser user, string permission)
         {
             user.Permissions.Add(permission);

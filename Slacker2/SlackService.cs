@@ -188,6 +188,20 @@ namespace Slacker2
 
             return ts.Task;
         }
+        public Task<string> SendActionMessageAndWait(string channel, string message, SlackInteractiveMessage messageData)
+        {
+            var requestId = (new Guid()).ToString();
+            var tcs = new TaskCompletionSource<string>();
+            
+            SQSSubscriber.WaitFor(requestId, (selected) =>
+            {
+                tcs.SetResult(selected);
+            });
+            messageData.CallbackId = requestId;
+            SendActionMessage(channel, message, messageData);
+
+            return tcs.Task;
+        }
 
         private void ProcessCompletion(TaskCompletionSource<SlackMessage> ts, string channel, PostMessageResponse msg)
         {

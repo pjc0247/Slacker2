@@ -242,6 +242,9 @@ namespace Slacker2
             InitializeSchedulers();
             InitializeHandlers();
 
+            if (string.IsNullOrEmpty(Configuration.SQSUrl) == false)
+                SQSSubscriber.Initialize(Configuration);
+
             if (Handlers.Count == 0)
                 throw new InvalidOperationException("No handlers found");
         }
