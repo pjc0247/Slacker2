@@ -75,7 +75,7 @@ TODO
 ```
 
 If you can manage a __https__ server yourself, you may want to use it without AWS stuffs.<br>
-However, We don't have flexibilities for it. You have to implement yourself.<br>
+However, We don't have flexibilities for it. You have to implement by yourself.<br>
 __[Please edit these lines of code](https://github.com/pjc0247/Slacker2/blob/master/Slacker2/SlackService.cs#L191-L204)__
 
 __Send a message that includes some buttons__
