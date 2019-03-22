@@ -71,7 +71,7 @@ Currently, Slacker2 only supports `buton` type messages.
 
 ```cs
 var choice = await SendActionMessageAndWait(
-    "channel, "choose one of the following items",
+    "channel", "choose one of the following items",
     new SlackInteractiveMessage() {
         Buttons = new SlackActionButton[] {
             new SlackActionButton() {
