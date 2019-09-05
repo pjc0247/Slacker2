@@ -61,6 +61,15 @@ namespace Slacker2
             SendMessageAsync(channel, message);
         }
 
+        protected Task<SlackMessage> SendAccessoryMessageAsync(string channel, string message, string imageUrl)
+        {
+            return Slack.SendAccessoryMessage(channel, message, imageUrl);
+        }
+        protected void SendAccessoryMessage(string channel, string message, string imageUrl)
+        {
+            SendAccessoryMessageAsync(channel, message, imageUrl);
+        }
+
         protected Task<SlackMessage> SendMessageAsync(SlackChannel channel, string message)
         {
             return Slack.SendMessage(channel.Name, message);

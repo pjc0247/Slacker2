@@ -126,6 +126,21 @@ namespace Slacker2
 
             return ts.Task;
         }
+        public Task<SlackMessage> SendAccessoryMessage(string channel, string message, string imageUrl)
+        {
+            Console.WriteLine("[Send] " + message);
+
+            var ts = new TaskCompletionSource<SlackMessage>();
+
+            Slack.PostBlock(
+                _ => { ProcessCompletion(ts, channel, _); },
+                channel,
+                message,
+                as_user: true,
+                accessory_image: imageUrl);
+
+            return ts.Task;
+        }
 
         /// <summary>
         /// Modifies the message which is previously sent
