@@ -63,6 +63,39 @@ public void OnTimer()
 }
 ```
 
+Interactive Message
+----
+```
+Currently, Slacker2 only supports `buton` type messages.
+```
+__Requirements__<br>
+__Slack__ requires a __https__ server for interactive messages. we detour this using `AWS.SQS` and `AWS.Labmda`.<br>
+```
+TODO
+```
+
+If you can manage a __https__ server yourself, you may want to use it without AWS stuffs.<br>
+However, We don't have flexibilities for it. You have to implement by yourself.<br>
+__[Please edit these lines of code](https://github.com/pjc0247/Slacker2/blob/master/Slacker2/SlackService.cs#L191-L204)__
+
+__Send a message that includes some buttons__
+```cs
+var choice = await SendActionMessageAndWait(
+    "channel", "choose one of the following items",
+    new SlackInteractiveMessage() {
+        Buttons = new SlackActionButton[] {
+            new SlackActionButton() {
+                Name = "orange", Text = "Give me an Orange!"
+            },
+            new SlackActionButton() {
+                Name = "banana", Text = "Give me a Banana!"
+            }
+        }
+    });
+    
+if (choice == "orange") { /* ... */ }
+else if (choice == "banana") { /* .... */ }
+```
 
 Advanced Features
 ----
