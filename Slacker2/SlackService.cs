@@ -128,7 +128,7 @@ namespace Slacker2
         }
         public Task<SlackMessage> SendAccessoryMessage(string channel, string message, string imageUrl)
         {
-            Console.WriteLine("[Send] " + message);
+            Console.WriteLine("[Send] " + message + " / " + imageUrl);
 
             var ts = new TaskCompletionSource<SlackMessage>();
 
@@ -227,6 +227,7 @@ namespace Slacker2
             catch (Exception e)
             {
                 ts.SetException(e);
+                Console.WriteLine(msg.error);
                 Console.WriteLine(e);
             }
         }
